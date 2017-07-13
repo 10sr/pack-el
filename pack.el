@@ -107,7 +107,7 @@ Otherwise, pack marked files, prompting user to decide archive filename."
     (if (and (eq 1 (length files))
              (pack--get-commands-for firstfile))
         (pack-dired-do-unpack firstfile)
-      (pack-dired-do-pack files))))
+      (apply 'pack-dired-do-pack files))))
 
 ;;;###autoload
 (defun pack-dired-do-unpack (&rest files)
