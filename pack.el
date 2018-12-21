@@ -1,10 +1,10 @@
 ;;; pack.el --- Pack and unpack archive files
 
 ;; Author: 10sr <8.slashes@gmail.com>
-;; URL: https://github.com/10sr/emacs-lisp/blob/master/pack.el
+;; URL: https://github.com/10sr/pack-el
 ;; Version: 0.1
 ;; Package-Requires: ()
-;; Keywords: files
+;; Keywords: files dired
 
 ;; This file is not part of GNU Emacs.
 
