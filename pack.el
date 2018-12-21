@@ -59,7 +59,7 @@
   :group 'pack)
 
 (defcustom pack-dired-default-extension
-  ".7z"
+  ".tgz"
   "Default suffix for `pack-dired-do-pack' functions.
 Filename with this suffix must matches one of the cars in
 `pack-program-alist'."
@@ -70,9 +70,9 @@ Filename with this suffix must matches one of the cars in
   `(
     ("\\.7z\\'" :pack "7z a" :unpack "7z x")
     ("\\.zip\\'" :pack "zip -r" :unpack "unzip")
-    ("\\.tar\\'" :pack "tar cf" :unpack "tar xf")
-    ("\\.tgz\\'" :pack "tar czf" :unpack "tar xzf")
-    ("\\.tar\\.gz\\'" :pack "tar czf" :unpack "tar xzf")
+    ("\\.tar\\'" :pack "tar -cf" :unpack "tar -xf")
+    ("\\.tgz\\'" :pack "tar -czf" :unpack "tar -xf")
+    ("\\.tar\\.gz\\'" :pack "tar -czf" :unpack "tar -xf")
     )
   "Alist of filename patterns, and command for pack and unpack.
 
