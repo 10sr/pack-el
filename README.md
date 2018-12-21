@@ -27,4 +27,4 @@ only one file is selected and that has an extension for archive.
 License
 -------
 
-This software is unlicensed. See `LICENSE` for details.
+This software is licensed under Apache License 2.0 . See `LICENSE` for details.
