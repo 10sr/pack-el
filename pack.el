@@ -1,4 +1,4 @@
-;;; pack.el --- Pack and unpack archive files
+;;; pack.el --- Pack and unpack archive files  -*- lexical-binding: t -*-
 
 ;; Author: 10sr <8.slashes@gmail.com>
 ;; URL: https://github.com/10sr/pack-el
