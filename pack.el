@@ -145,7 +145,6 @@ If the pattern matching FILENAME is found at car of the list in
                    'string-match-p
                    nil)))
 
-;;;###autoload
 (defun pack-unpack (archive)
   "Unpack ARCHIVE.
 
