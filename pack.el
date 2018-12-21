@@ -167,7 +167,7 @@ Command for unpacking is defined in `pack-program-alist'."
   "Make ARCHIVE from FILES.
 
 If ARCHIVE have extension defined in `pack-program-alist', use that command.
-Otherwise, use `pack-default-extension' for pack."
+Otherwise error will be thrown."
   (let* ((cmd (plist-get (pack--get-commands-for archive)
                          :pack)))
     (if cmd
