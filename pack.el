@@ -3,7 +3,7 @@
 ;; Author: 10sr <8.slashes@gmail.com>
 ;; URL: https://github.com/10sr/pack-el
 ;; Version: 0.1
-;; Package-Requires: ()
+;; Package-Requires: ((emacs "24"))
 ;; Keywords: files dired
 
 ;; This file is not part of GNU Emacs.
