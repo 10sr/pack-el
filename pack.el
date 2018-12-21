@@ -121,10 +121,8 @@ Prompt user to input output archive file name."
                                   pack-dired-default-extension))
          (archive ;; (if (interactive-p)
           (read-file-name "Archive file name: "
-                          dir-default
-                          nil
-                          nil
-                          archive-default)
+                          (expand-file-name archive-default dir-default)
+                          (expand-file-name archive-default dir-default))
           ;; (concat dir-default archive-default)
           ))
     (apply 'pack-pack
@@ -155,11 +153,11 @@ Command for unpacking is defined in `pack-program-alist'."
          )
     (if cmd
         (async-shell-command (concat cmd
-                               " "
-                               (shell-quote-argument earchive))
-                       (get-buffer-create pack-buffer-name))
+                                     " "
+                                     (shell-quote-argument earchive))
+                             (get-buffer-create pack-buffer-name))
       (error "Cannot find unpacking command for %s"
-               archive))))
+             archive))))
 
 (defun pack-pack (archive &rest files)
   "Make ARCHIVE from FILES.
