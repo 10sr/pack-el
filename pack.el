@@ -32,10 +32,9 @@
 ;; Use from Dired
 ;; --------------
 
-;; To pack/unpack files from dired buffers, add following to your init.el:
+;; To pack/unpack files from dired buffers, add following to your dired confiugration:
 
-;; (with-eval-after-load 'dired
-;;   (define-key dired-mode-map "P" 'pack-dired-dwim))
+;; (define-key dired-mode-map "P" 'pack-dired-dwim))
 
 ;; This command creates an archive file from marked files, or unpack the file when
 ;; only one file is selected and that has an extension for archive.
@@ -93,7 +92,7 @@ should be ahead of pattern for \".gz\""
 (defun pack-dired-dwim (&rest files)
   "Pack or unpack FILES in dired.
 
-If going to process one file and that has a archive suffix defined in
+If selecting one file and that has a archive suffix defined in
 `pack-program-alist', unpack that.
 Otherwise, creates archive from marked files, prompting user for archive filename."
   (interactive (dired-get-marked-files t))

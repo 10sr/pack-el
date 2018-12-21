@@ -17,10 +17,9 @@ Commands to pack/unpack archive files can be defined by setting
 Use from Dired
 --------------
 
-To pack/unpack files from dired buffers, add following to your init.el:
+To pack/unpack files from dired buffers, add following to your dired configuration:
 
-    (with-eval-after-load 'dired
-      (define-key dired-mode-map "P" 'pack-dired-dwim))
+    (define-key dired-mode-map "P" 'pack-dired-dwim))
 
 This command creates an archive file from marked files, or unpack the file when
 only one file is selected and that has an extension for archive.
@@ -28,4 +27,4 @@ only one file is selected and that has an extension for archive.
 License
 -------
 
-This software is unlicensed.
+This software is unlicensed. See `LICENSE` for details.
