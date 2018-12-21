@@ -172,14 +172,12 @@ Otherwise, use `pack-default-extension' for pack."
                                                             archive))
                                      " "
                                      (mapconcat (lambda (f)
-                                                  (shell-quote-argument
-                                                   (expand-file-name
-                                                    f)))
+                                                  (shell-quote-argument f))
                                                 files
                                                 " "))
                              (get-buffer-create pack-buffer-name))
       (error "Invalid extension for packing: %s"
-               archive))))
+             archive))))
 
 (provide 'pack)
 
