@@ -70,20 +70,25 @@ Filename with this suffix must matches one of the cars in
 (defcustom pack-program-alist
   `(
     ;; Use plist for cdr
-    ("\\.7z\\'" "7z a" "7z x")
-    ("\\.zip\\'" "zip -r" "unzip")
-    ("\\.tar\\'" "tar cf" "tar xf")
-    ("\\.tgz\\'" "tar czf" "tar xzf")
-    ("\\.tar\\.gz\\'" "tar czf" "tar xzf")
+    ("\\.7z\\'" :pack "7z a" :unpack "7z x")
+    ("\\.zip\\'" :pack "zip -r" :unpack "unzip")
+    ("\\.tar\\'" :pack "tar cf" :unpack "tar xf")
+    ("\\.tgz\\'" :pack "tar czf" :unpack "tar xzf")
+    ("\\.tar\\.gz\\'" :pack "tar czf" :unpack "tar xzf")
     )
   "Alist of filename patterns, and command for pack and unpack.
 
-Each element should look like (REGEXP PACKING-COMMAND UNPACKING-COMMAND).
-PACKING-COMMAND and UNPACKING-COMMAND can be nil if the command is not
-available.  Alist is searched from the beginning so pattern for \".tar.gz\"
+Each elemetn should look like (REGEXP . PLIST).
+PLIST should be a plist that may have `:pack' and `:unpack' keys, whose
+values will be commands used to pack and unpack files respectively.
+These can be omitted if commands are not available.
+
+Alist is searched from the beginning.  So, for example, pattern for \".tar.gz\"
 should be ahead of pattern for \".gz\""
   :group 'pack
-  :type '(alist :key-type string :value-type (repeat string)))
+  :type '(alist :key-type string
+                :value-type (plist :key-type symbol
+                                   :value-type string)))
 
 ;;;###autoload
 (defun pack-dired-dwim (&rest files)
@@ -149,8 +154,8 @@ If the pattern matching FILENAME is found at car of the list in
 Command for unpacking is defined in `pack-program-alist'."
   (interactive "fArchive to extract: ")
   (let* ((earchive (expand-file-name archive))
-         (cmd (nth 1
-                   (pack--get-commands-for earchive)))
+         (cmd (plist-get (pack--get-commands-for earchive)
+                         :unpack))
          )
     (if cmd
         (async-shell-command (concat cmd
@@ -165,7 +170,8 @@ Command for unpacking is defined in `pack-program-alist'."
 
 If ARCHIVE have extension defined in `pack-program-alist', use that command.
 Otherwise, use `pack-default-extension' for pack."
-  (let* ((cmd (car (pack--get-commands-for archive))))
+  (let* ((cmd (plist-get (pack--get-commands-for archive)
+                         :pack)))
     (if cmd
         (async-shell-command (concat cmd
                                      " "
