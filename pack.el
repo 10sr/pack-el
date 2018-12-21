@@ -69,7 +69,6 @@ Filename with this suffix must matches one of the cars in
 
 (defcustom pack-program-alist
   `(
-    ;; Use plist for cdr
     ("\\.7z\\'" :pack "7z a" :unpack "7z x")
     ("\\.zip\\'" :pack "zip -r" :unpack "unzip")
     ("\\.tar\\'" :pack "tar cf" :unpack "tar xf")
