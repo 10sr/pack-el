@@ -11,7 +11,7 @@ This library provides some commands and functions to pack and unpack
 archives in a simple way.
 
 Commands to pack/unpack archive files can be defined by setting
-`pack-program-alist' variable.
+`pack-program-alist` variable.
 
 
 Use from Dired
