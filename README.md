@@ -1,3 +1,6 @@
+[![MELPA](https://melpa.org/packages/pack-badge.svg)](https://melpa.org/#/pack)
+
+
 pack.el
 =======
 
