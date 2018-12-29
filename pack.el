@@ -76,7 +76,7 @@ Filename with this suffix must matches one of the cars in
     )
   "Alist of filename patterns, and command for pack and unpack.
 
-Each elemetn should look like (REGEXP . PLIST).
+Each element should look like (REGEXP . PLIST).
 PLIST should be a plist that may have `:pack' and `:unpack' keys, whose
 values will be commands used to pack and unpack files respectively.
 These can be omitted if commands are not available.
