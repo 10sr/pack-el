@@ -1,4 +1,5 @@
 [![MELPA](https://melpa.org/packages/pack-badge.svg)](https://melpa.org/#/pack)
+[![MELPA Stable](https://stable.melpa.org/packages/pack-badge.svg)](https://stable.melpa.org/#/pack)
 
 
 pack.el
