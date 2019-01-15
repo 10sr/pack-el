@@ -88,6 +88,11 @@ should be ahead of pattern for \".gz\""
                 :value-type (plist :key-type symbol
                                    :value-type string)))
 
+(defcustom pack-silence nil
+  "When set to non-nil, do not pop-up result buffer of pack and unpack processes."
+  :type 'boolean
+  :group 'pack)
+
 ;;;###autoload
 (defun pack-dired-dwim (&rest files)
   "Pack or unpack FILES in dired.
@@ -155,10 +160,13 @@ Command for unpacking is defined in `pack-program-alist'."
                          :unpack))
          )
     (if cmd
-        (async-shell-command (concat cmd
-                                     " "
-                                     (shell-quote-argument earchive))
-                             (get-buffer-create pack-buffer-name))
+        (let ((c (current-window-configuration)))
+          (async-shell-command (concat cmd
+                                       " "
+                                       (shell-quote-argument earchive))
+                               (get-buffer-create pack-buffer-name))
+          (when pack-silence
+            (set-window-configuration c)))
       (error "Cannot find unpacking command for %s"
              archive))))
 
@@ -170,15 +178,18 @@ Otherwise error will be thrown."
   (let* ((cmd (plist-get (pack--get-commands-for archive)
                          :pack)))
     (if cmd
-        (async-shell-command (concat cmd
-                                     " "
-                                     (shell-quote-argument (expand-file-name
-                                                            archive))
-                                     " "
-                                     (mapconcat 'shell-quote-argument
-                                                files
-                                                " "))
-                             (get-buffer-create pack-buffer-name))
+        (let ((c (current-window-configuration)))
+          (async-shell-command (concat cmd
+                                       " "
+                                       (shell-quote-argument (expand-file-name
+                                                              archive))
+                                       " "
+                                       (mapconcat 'shell-quote-argument
+                                                  files
+                                                  " "))
+                               (get-buffer-create pack-buffer-name))
+          (when pack-silence
+            (set-window-configuration c)))
       (error "Cannot find packing command for: %s"
              archive))))
 
