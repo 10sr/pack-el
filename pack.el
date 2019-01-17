@@ -78,8 +78,8 @@ Filename with this suffix must matches one of the cars in
 
 Each element should look like (REGEXP . PLIST).
 PLIST should be a plist that may have `:pack' and `:unpack' keys, whose
-values will be commands used to pack and unpack files respectively.
-These can be omitted if commands are not available.
+values will be used as commands to pack and unpack files respectively.
+These can be omitted when pack/unpack cannot be done.
 
 Alist is searched from the beginning.  So, for example, pattern for \".tar.gz\"
 should be ahead of pattern for \".gz\""
