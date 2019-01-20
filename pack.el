@@ -194,6 +194,25 @@ command."
 ;; (pack--generate-command-list "tar -xf" "a b.zip")
 ;; (pack--generate-command-list "tar -czf" "a b.zip" '("a b.txt" "b.txt"))
 
+(defun pack--start-process (command &optional buffer)
+  "Start COMMAND process in a buffer.
+
+BUFFER, if given, will be associated with the pack/unpack process.
+
+Return buffer where the process runs."
+  (let ((buf (or buffer
+                 (get-buffer-create pack-buffer-name)))
+        (dir default-directory))
+    (when (get-buffer-process buf)
+      ;; TODO: How to do this?
+      (error "Another pack/unpack process is still running"))
+    (with-current-buffer buf
+      (cd dir))
+    (make-process :name "Pack"
+                  :command command
+                  :buffer buf)
+    buf))
+
 (defun pack-unpack (archive)
   "Unpack ARCHIVE.
 Command for unpacking is defined in `pack-program-alist'."
