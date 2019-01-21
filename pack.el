@@ -150,15 +150,15 @@ If the pattern matching FILENAME is found at car of the list in
                    'string-match-p
                    nil)))
 
-(defun pack--generate-command-list (command archive &optional sources)
-  "Generate command list to execute.
+(defun pack--generate-command (command archive &optional sources)
+  "Generate command string to execute.
 
 COMMAND should be a list that may contain `archive' and `sources' symbol.
 
 ARCHIVE should be the file path of archive to pack or unpack.
 SOURCES, if given, should be a list of file paths to create ARCHIVE
 from.
-These arguments are put in place of COMMAND argument.
+These arguments are put in place of each symbol in COMMAND argument.
 
 For backward compatibility, string arguments are allowed for COMMAND.
 In that case, ARCIVES and SOURCES will be quoted and appended to that
@@ -176,42 +176,25 @@ command."
                                (mapconcat 'shell-quote-argument
                                           sources
                                           " "))))
-        (list shell-file-name
-              shell-command-switch
-              result))
-    (let ((expanded (eval `(list ,@command)
-                          `((archive . ,archive)
-                            (sources . ,sources)))))
-      ;; Flatten sources
-      (cl-loop for e in expanded
-               nconc
-               (if (listp e)
-                   (cl-copy-list e)
-                 (list e))))))
+        result)
+    (let* ((expanded (eval `(list ,@command)
+                           `((archive . ,archive)
+                             (sources . ,sources))))
+           ;; Flatten sources
+           (flattened (cl-loop for e in expanded
+                               nconc
+                               (if (listp e)
+                                   (cl-copy-list e)
+                                 (list e)))))
+      (mapconcat 'shell-quote-argument
+                 flattened
+                 " "))))
 
-;; (pack--generate-command-list '("unzip" archive) "a.zip")
-;; (pack--generate-command-list '("tar" "-czf" archive sources) "a.zip" '("a.txt" "b.txt"))
-;; (pack--generate-command-list "tar -xf" "a b.zip")
-;; (pack--generate-command-list "tar -czf" "a b.zip" '("a b.txt" "b.txt"))
+;; (pack--generate-command '("unzip" archive) "a b.zip")
+;; (pack--generate-command '("tar" "-czf" archive sources) "a b.zip" '("a.txt" "b c.txt"))
+;; (pack--generate-command "tar -xf" "a b.zip")
+;; (pack--generate-command "tar -czf" "a b.zip" '("a b.txt" "b.txt"))
 
-(defun pack--start-process (command &optional buffer)
-  "Start COMMAND process in a buffer.
-
-BUFFER, if given, will be associated with the pack/unpack process.
-
-Return buffer where the process runs."
-  (let ((buf (or buffer
-                 (get-buffer-create pack-buffer-name)))
-        (dir default-directory))
-    (when (get-buffer-process buf)
-      ;; TODO: How to do this?
-      (error "Another pack/unpack process is still running"))
-    (with-current-buffer buf
-      (cd dir))
-    (make-process :name "Pack"
-                  :command command
-                  :buffer buf)
-    buf))
 
 (defun pack-unpack (archive)
   "Unpack ARCHIVE.
