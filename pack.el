@@ -117,7 +117,7 @@ Prompt user to unpack files for sure."
   (interactive (dired-get-marked-files t))
   (dolist (file files)
     (when (yes-or-no-p (format "Unpack %s?: " file))
-      (pack-unpack file)))
+      (pack-unpack (expand-file-name file))))
   (revert-buffer))
 
 ;;;###autoload
@@ -137,7 +137,7 @@ Prompt user for archive filename."
                           (expand-file-name archive-default dir-default))
           ))
     (apply 'pack-pack
-           archive
+           (expand-file-name archive)
            files))
   (revert-buffer))
 
@@ -223,6 +223,7 @@ If ARCHIVE have extension defined in `pack-program-alist', use that command.
 Otherwise error will be thrown."
   (cl-assert files
              "FILES to pack are empty")
+  (setq archive (expand-file-name archive))
   (let* ((cmd (plist-get (pack--get-commands-for archive)
                          :pack)))
     (if cmd
