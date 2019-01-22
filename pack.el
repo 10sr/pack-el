@@ -70,11 +70,21 @@ Filename with this suffix must matches one of the cars in
 
 (defcustom pack-program-alist
   `(
-    ("\\.7z\\'" :pack "7z a" :unpack "7z x")
-    ("\\.zip\\'" :pack "zip -r" :unpack "unzip")
-    ("\\.tar\\'" :pack "tar -cf" :unpack "tar -xf")
-    ("\\.tgz\\'" :pack "tar -czf" :unpack "tar -xf")
-    ("\\.tar\\.gz\\'" :pack "tar -czf" :unpack "tar -xf")
+    ("\\.7z\\'"
+     :pack ("7z" "a" archive sources)
+     :unpack ("7z" "x" archive))
+    ("\\.zip\\'"
+     :pack ("zip" "-r" archive sources)
+     :unpack ("unzip" archive))
+    ("\\.tar\\'"
+     :pack ("tar" "-cf" archive sources)
+     :unpack ("tar" "-xf" archive))
+    ("\\.tgz\\'"
+     :pack ("tar" "-czf" archive sources)
+     :unpack ("tar" "-xf" archive))
+    ("\\.tar\\.gz\\'"
+     :pack ("tar" "-czf" archive sources)
+     :unpack ("tar" "-xf" archive))
     )
   "Alist of filename patterns, and command for pack and unpack.
 
@@ -83,12 +93,24 @@ PLIST should be a plist that may have `:pack' and `:unpack' keys, whose
 values will be used as commands to pack and unpack files respectively.
 These can be omitted when pack/unpack cannot be done.
 
+Each command should be in format like '(COMMAND ARGS...).
+ARGS may contain symbol `archive' and `sources', which will be
+replaced when executing these commands.
+For backward compatibility, command also can be just a string, in which
+case commands to execute will be generated as follows:
+
+    COMMAND ARCHIVES [SOURCES...]
+
+
 Alist is searched from the beginning.  So, for example, pattern for \".tar.gz\"
 should be ahead of pattern for \".gz\""
   :group 'pack
   :type '(alist :key-type string
                 :value-type (plist :key-type symbol
-                                   :value-type string)))
+                                   :value-type (choice string
+                                                       (repeat (choice string
+                                                                       (const archive)
+                                                                       (const sources)))))))
 
 (defcustom pack-silence nil
   "When set to non-nil, do not pop-up result buffer of pack and unpack processes."
