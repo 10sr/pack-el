@@ -164,7 +164,9 @@ These arguments are put in place of each symbol in COMMAND argument.
 
 For backward compatibility, string arguments are allowed for COMMAND.
 In that case, ARCIVES and SOURCES will be quoted and appended to that
-command."
+command, as follows:
+
+    COMMAND ARCHIVE [SOURCES ...]"
   (cl-assert command)
   (cl-assert archive)
   (if (stringp command)
@@ -202,15 +204,12 @@ command."
   "Unpack ARCHIVE.
 Command for unpacking is defined in `pack-program-alist'."
   (interactive "fArchive to extract: ")
-  (let* ((earchive (expand-file-name archive))
-         (cmd (plist-get (pack--get-commands-for earchive)
-                         :unpack))
-         )
+  (setq archive (expand-file-name archive))
+  (let ((cmd (plist-get (pack--get-commands-for archive)
+                        :unpack)))
     (if cmd
         (let ((c (current-window-configuration)))
-          (async-shell-command (concat cmd
-                                       " "
-                                       (shell-quote-argument earchive))
+          (async-shell-command (pack--generate-command cmd archive)
                                (get-buffer-create pack-buffer-name))
           (when pack-silence
             (set-window-configuration c)))
@@ -222,18 +221,13 @@ Command for unpacking is defined in `pack-program-alist'."
 
 If ARCHIVE have extension defined in `pack-program-alist', use that command.
 Otherwise error will be thrown."
+  (cl-assert files
+             "FILES to pack are empty")
   (let* ((cmd (plist-get (pack--get-commands-for archive)
                          :pack)))
     (if cmd
         (let ((c (current-window-configuration)))
-          (async-shell-command (concat cmd
-                                       " "
-                                       (shell-quote-argument (expand-file-name
-                                                              archive))
-                                       " "
-                                       (mapconcat 'shell-quote-argument
-                                                  files
-                                                  " "))
+          (async-shell-command (pack--generate-command cmd archive files)
                                (get-buffer-create pack-buffer-name))
           (when pack-silence
             (set-window-configuration c)))
