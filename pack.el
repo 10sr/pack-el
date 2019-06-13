@@ -85,6 +85,15 @@ Filename with this suffix must matches one of the cars in
     ("\\.tar\\.gz\\'"
      :pack ("tar" "-czf" archive sources)
      :unpack ("tar" "-xf" archive))
+    ("\\.tar\\.bz2\\'"
+     :pack ("tar" "-cjf" archive sources)
+     :unpack ("tar" "-xf" archive))
+    ("\\.tar\\.xz\\'"
+     :pack ("tar" "-cJf" archive sources)
+     :unpack ("tar" "-xf" archive))
+    ("\\.txz\\'"
+     :pack ("tar" "-cJf" archive sources)
+     :unpack ("tar" "-xf" archive))
     )
   "Alist of filename patterns, and command for pack and unpack.
 
