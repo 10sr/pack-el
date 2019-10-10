@@ -250,8 +250,14 @@ Command for unpacking is defined in `pack-program-alist'."
 (defun pack-pack (archive &rest files)
   "Make ARCHIVE from FILES.
 
-If ARCHIVE have extension defined in `pack-program-alist', use that command.
-Otherwise error will be thrown."
+If ARCHIVE file does not exists and `:pack' command is defined,
+create ARCHIVE using that command.
+
+If ARCHIVE file alreay exists and `:pack-append' command is defined,
+append files to ARCHIVE using `:pack-append' command.
+
+Command for archiving and appending is searched from `pack-program-alist'.
+For other cases, error will be thrown."
   (cl-assert files
              "FILES to pack are empty")
   (setq archive (expand-file-name archive))
