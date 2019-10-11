@@ -75,9 +75,11 @@ Filename with this suffix must matches one of the cars in
      :unpack ("7z" "x" archive))
     ("\\.zip\\'"
      :pack ("zip" "-r" archive sources)
+     :pack-append ("zip" "-r" archive sources)
      :unpack ("unzip" archive))
     ("\\.tar\\'"
      :pack ("tar" "-cf" archive sources)
+     :pack-append ("tar" "-rf" archive sources)
      :unpack ("tar" "-xf" archive))
     ("\\.tgz\\'"
      :pack ("tar" "-czf" archive sources)
