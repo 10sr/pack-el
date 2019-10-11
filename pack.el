@@ -98,8 +98,9 @@ Filename with this suffix must matches one of the cars in
   "Alist of filename patterns, and command for pack and unpack.
 
 Each element should look like (REGEXP . PLIST).
-PLIST should be a plist that may have `:pack' and `:unpack' keys, whose
-values will be used as commands to pack and unpack files respectively.
+PLIST should be a plist that may have `:pack', `:pack-append' and `:unpack'
+keys, whose values will be used as commands to pack, append files to existing
+archive files, and unpack files respectively.
 These can be omitted when pack/unpack cannot be done.
 
 Each command should be in format like '(COMMAND ARGS...).
