@@ -264,15 +264,24 @@ For other cases, error will be thrown."
   (cl-assert files
              "FILES to pack are empty")
   (setq archive (expand-file-name archive))
-  (let* ((cmd (plist-get (pack--get-commands-for archive)
-                         :pack)))
-    (if cmd
+  (let* ((pack-command (plist-get (pack--get-commands-for archive)
+                                  :pack))
+         (pack-append-command (plist-get (pack--get-commands-for archive)
+                                         :pack-append))
+         (append-p (file-exists-p archive))
+         (command (if append-p
+                      pack-append-command
+                    pack-command)))
+
+    (if command
         (let ((c (current-window-configuration)))
-          (async-shell-command (pack--generate-command cmd archive files)
+          (async-shell-command (pack--generate-command command archive files)
                                (get-buffer-create pack-buffer-name))
           (when pack-silence
             (set-window-configuration c)))
-      (error "Cannot find packing command for: %s"
+      (error (if append-p
+                 "Command not defined to append files to: %s"
+               "Command not defined to packing files into: %s")
              archive))))
 
 (provide 'pack)
