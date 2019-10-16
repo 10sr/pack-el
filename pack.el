@@ -281,8 +281,8 @@ For other cases, error will be thrown."
           (when pack-silence
             (set-window-configuration c)))
       (error (if append-p
-                 "Command not defined to append files to: %s"
-               "Command not defined to packing files into: %s")
+                 "Cannot append files to existing archives, append command is not defined: %s"
+               "Cannot pack files, command not defined: %s")
              archive))))
 
 (provide 'pack)
