@@ -2,7 +2,7 @@
 
 ;; Author: 10sr <8.slashes@gmail.com>
 ;; URL: https://github.com/10sr/pack-el
-;; Version: 0.1
+;; Version: 0.1.1
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 ;; Keywords: files dired
 
